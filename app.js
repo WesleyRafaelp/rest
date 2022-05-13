@@ -1,12 +1,26 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan')
+const bodyParser = require('body-parser')
 
 const rotaProdutos = require('./routes/produtos');
 const rotaPedidos = require('./routes/pedidos');
-const res = require('express/lib/response');
 
 app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({ extended: false })); //apenas dados simples
+app.use(bodyParser.json()); //só formato json de entrada
+
+app.use((req,res,next)=> {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Header', 
+    'Origin, X-Requested-with, Content-Type, Accept, Authorization');
+
+    if(req.method === 'OPTIONS'){
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).send({});
+    };
+    next();
+});
 
 app.use('/pedidos', rotaPedidos);
 app.use('/produtos', rotaProdutos);
