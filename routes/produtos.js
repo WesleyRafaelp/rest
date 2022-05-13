@@ -1,52 +1,91 @@
 const express = require('express');
 const router = express.Router();
+const mysql = require('../mysql').pool;
+
 
 //retorna todos os produtos
 router.get('/', (req, res, next) => {
-    res.status(200).send({
-        mensagem: 'Retorna todos os produtos'
+    mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error }) };
+        conn.query(
+            'SELECT * FROM produtos;',
+            (error, resultado, fields) => {
+                if (error) { return res.status(500).send({ error: error }) }
+                return res.status(200).send({ response: resultado });
+            }
+        );
     });
+    
 });
 
 //insere um produto
 router.post('/', (req, res, next) => {
-    const produto = {
-        nome: req.body.nome,
-        preco: req.body.preco
-    }
-    res.status(201).send({
-        mensagem: 'Produto inserido',
-        produtoCriado: produto
+    mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error }) };
+        conn.query(
+            'insert into produtos (nome, preco) values (?,?)',
+            [req.body.nome, req.body.preco],
+            (error, resultado, field) => {
+                conn.release();
+                if (error) { return res.status(500).send({ error: error }) };
+                res.status(201).send({
+                    mensagem: 'Produto inserido com sucesso',
+                    id_produto: resultado.insertId
+                });
+            }
+        )
     });
 });
 
 //retorna um produto específico
 router.get('/:id_produto', (req, res, next) => {
-    const id = req.params.id_produto
+    mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error }) };
+        conn.query(
+            'SELECT * FROM produtos WHERE id_produto = ?;',
+            [req.params.id_produto],
+            (error, resultado, fields) => {
+                if (error) { return res.status(500).send({ error: error }) }
+                return res.status(200).send({ response: resultado });
+            }
+        );
+    });
 
-    if (id === 'especial') {
-        res.status(200).send({
-            mensagem: 'Você descobriu um ID especial',
-            id: id
-        });
-    } else {
-        res.status(200).send({
-            mensagem: 'Você passou um ID'
-        });
-    };
 });
 
 // altera um produto
 router.patch('/', (req, res, next) => {
-    res.status(201).send({
-        mensagem: 'Produto alterado'
+    mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error }) };
+        conn.query(
+            'UPDATE produtos SET nome = ?, preco = ? WHERE id_produto = ?',
+            [req.body.nome, req.body.preco, req.body.id_produto],
+            (error, resultado, field) => {
+                conn.release();
+                if (error) { return res.status(500).send({ error: error }) };
+                res.status(202).send({
+                    mensagem: 'Produto alterado com sucesso'
+                });
+            }
+        )
     });
 });
 
 //deleta um produto
 router.delete('/', (req, res, next) => {
-    res.status(201).send({
-        mensagem: 'Produto apagado'
+    mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error }) };
+        conn.query(
+            'DELETE FROM produtos WHERE id_produto =?;',
+            [req.body.id_produto],
+            (error, resultado, field) => {
+                conn.release();
+                if (error) { return res.status(500).send({ error: error }) };
+                res.status(202).send({
+                    mensagem: 'Produto exluido com sucesso'
+                });
+            }
+        )
     });
 });
 
