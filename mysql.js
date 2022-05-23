@@ -7,5 +7,5 @@ var pool = mysql.createPool({
     "host": process.env.MYSQL_HOST ,
     "port":process.env.MYSQL_PORT
 });
-console.log(pool)
+
 exports.pool = pool;
