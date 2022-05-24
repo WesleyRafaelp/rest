@@ -1,5 +1,4 @@
 const express = require('express');
-const { send } = require('express/lib/response');
 const router = express.Router();
 const mysql = require('../mysql').pool;
 
@@ -73,7 +72,7 @@ router.get('/:id_produto', (req, res, next) => {
             [req.params.id_produto],
             (error, result, fields) => {
                 if (error) { return res.status(500).send({ error: error }) }
-                if (result.lenght == 0) {
+                if (result.length == 0) {
                     return res.status(404).send({
                         mensagem : 'Não foi encontrado produto com esse ID'
                     });
