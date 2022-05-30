@@ -18,9 +18,18 @@
     "body-parser": "^1.20.0",
     "express": "^4.18.1",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
     "mysql2": "^2.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WesleyRafaelp/rest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WesleyRafaelp/rest/issues"
+  },
+  "homepage": "https://github.com/WesleyRafaelp/rest#readme"
 }
