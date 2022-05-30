@@ -62,7 +62,6 @@ router.get('/', (req, res, next) => {
 
 //insere um produto
 router.post('/', upload.single('produto_imagem'), (req, res, next) => {
-    console.log(req.file);
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) };
         conn.query(
