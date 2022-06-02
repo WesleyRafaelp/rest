@@ -25,13 +25,5 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/WesleyRafaelp/rest.git"
-  },
-  "bugs": {
-    "url": "https://github.com/WesleyRafaelp/rest/issues"
-  },
-  "homepage": "https://github.com/WesleyRafaelp/rest#readme"
+  }
 }
