@@ -103,7 +103,7 @@ exports.getIdPedidos = async (req, res, next) => {
 exports.deletePedidos = async (req, res, next) => {
     try {
         const query ='DELETE FROM pedidos WHERE id_pedido =?;'
-        await mysql.execute(query, [req.body.id_pedido]);
+        await mysql.execute(query, [req.params.id_pedido]);
         const response = {
             mensagem: 'Pedido removido com sucesso',
             request: {
